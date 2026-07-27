@@ -1,0 +1,354 @@
+/* ============================================================
+   Ed's Auto Glass — redesign concept
+   Design tokens. Palette is drawn from the material itself:
+   --edge  is the green tint on the cut edge of laminated glass
+   --frit  is the black ceramic dot band printed around every windshield
+   --signal is roadside safety orange, used only on the call button
+   ============================================================ */
+:root{
+  --ground:#F4F6F5;
+  --panel:#FFFFFF;
+  --panel-2:#E9EDEC;
+  --ink:#0C1315;
+  --ink-2:#3A4749;
+  --ink-3:#6B7A7B;
+  --rule:#D2DAD8;
+  --edge:#0E8E7A;
+  --edge-soft:#D9F0EA;
+  --signal:#E24A08;
+  --frit:#0C1315;
+  --shadow:0 1px 2px rgba(12,19,21,.06), 0 12px 32px -18px rgba(12,19,21,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ground:#0A1012;
+    --panel:#101819;
+    --panel-2:#16211F;
+    --ink:#EDF3F1;
+    --ink-2:#AEBDBA;
+    --ink-3:#7C8C8B;
+    --rule:#222F2F;
+    --edge:#17B39A;
+    --edge-soft:#0F2A28;
+    --signal:#FF6A2B;
+    --frit:#05090A;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 20px 44px -24px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="light"]{
+  --ground:#F4F6F5; --panel:#FFFFFF; --panel-2:#E9EDEC;
+  --ink:#0C1315; --ink-2:#3A4749; --ink-3:#6B7A7B; --rule:#D2DAD8;
+  --edge:#0E8E7A; --edge-soft:#D9F0EA; --signal:#E24A08; --frit:#0C1315;
+  --shadow:0 1px 2px rgba(12,19,21,.06), 0 12px 32px -18px rgba(12,19,21,.35);
+}
+:root[data-theme="dark"]{
+  --ground:#0A1012; --panel:#101819; --panel-2:#16211F;
+  --ink:#EDF3F1; --ink-2:#AEBDBA; --ink-3:#7C8C8B; --rule:#222F2F;
+  --edge:#17B39A; --edge-soft:#0F2A28; --signal:#FF6A2B; --frit:#05090A;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 20px 44px -24px rgba(0,0,0,.9);
+}
+
+:root{
+  --display:"Arial Narrow","Helvetica Neue Condensed",'Roboto Condensed',"Liberation Sans Narrow",Impact,system-ui,sans-serif;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --data:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --wrap:1180px;
+  --pad:clamp(20px,5vw,64px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--edge); outline-offset:3px; border-radius:2px}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:200;
+  background:var(--panel); color:var(--ink); padding:12px 18px;
+  border:2px solid var(--edge); border-radius:0 0 4px 0;
+}
+.skip:focus{left:0}
+
+/* ============================================================
+   PRIMITIVES
+   ============================================================ */
+.wrap{max-width:var(--wrap); margin-inline:auto; padding-inline:var(--pad)}
+
+.h-display{
+  font-family:var(--display); font-weight:700;
+  font-stretch:condensed; text-transform:uppercase; letter-spacing:-.018em;
+  line-height:.94; text-wrap:balance; margin:0;
+}
+.t-xxl{font-size:clamp(40px,6.4vw,74px)}
+.t-xl{font-size:clamp(30px,4.2vw,52px)}
+.t-lg{font-size:clamp(25px,3vw,36px)}
+
+.label{
+  font-family:var(--data); font-size:11.5px; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+  margin:0;
+}
+.lede{font-size:clamp(17px,1.6vw,20px); line-height:1.55; color:var(--ink-2); max-width:60ch; margin:0}
+p{margin:0}
+
+/* Frit — the ceramic dot-matrix band printed around real windshield glass.
+   Dot size falls off across the band, same as the real thing. */
+.frit{
+  height:34px; width:100%;
+  background-image:radial-gradient(circle at center, var(--frit) 1.5px, transparent 1.9px);
+  background-size:9px 9px;
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, rgba(0,0,0,.55) 45%, transparent 100%);
+  mask-image:linear-gradient(to bottom, #000 0%, rgba(0,0,0,.55) 45%, transparent 100%);
+  opacity:.5;
+}
+.frit--up{
+  -webkit-mask-image:linear-gradient(to top, #000 0%, rgba(0,0,0,.55) 45%, transparent 100%);
+  mask-image:linear-gradient(to top, #000 0%, rgba(0,0,0,.55) 45%, transparent 100%);
+}
+
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--display); text-transform:uppercase; letter-spacing:.03em;
+  font-size:19px; font-weight:700; line-height:1;
+  padding:17px 26px; border-radius:3px; border:2px solid transparent;
+  text-decoration:none; cursor:pointer; transition:transform .12s ease, background .12s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn--call{background:var(--signal); color:#fff}
+.btn--call:hover{background:color-mix(in srgb, var(--signal) 88%, #000)}
+.btn--ghost{border-color:var(--rule); color:var(--ink); background:transparent}
+.btn--ghost:hover{border-color:var(--edge); color:var(--edge)}
+.btn .sub{
+  font-family:var(--data); font-size:11px; letter-spacing:.08em;
+  font-weight:500; opacity:.85; text-transform:none; white-space:nowrap;
+}
+@media (max-width:420px){
+  .btn{font-size:17px; padding:15px 18px; gap:8px}
+  .btn .sub{display:none}
+}
+
+.section{padding-block:clamp(56px,8vw,104px)}
+.section--panel{background:var(--panel)}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.topbar{
+  position:sticky; top:0; z-index:60;
+  background:color-mix(in srgb, var(--ground) 88%, transparent);
+  backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.topbar__in{display:flex; align-items:center; gap:clamp(12px,2vw,24px); min-height:64px}
+.mark{display:flex; align-items:baseline; gap:9px; text-decoration:none; margin-right:auto; flex:0 0 auto}
+.mark__name{
+  font-family:var(--display); font-weight:700; font-stretch:condensed;
+  text-transform:uppercase; font-size:clamp(19px,2.4vw,23px);
+  letter-spacing:-.01em; white-space:nowrap;
+}
+.mark__loc{font-family:var(--data); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); white-space:nowrap}
+.nav{display:flex; gap:clamp(14px,1.8vw,26px)}
+.nav a{font-size:15px; text-decoration:none; color:var(--ink-2); white-space:nowrap}
+.nav a:hover{color:var(--edge)}
+.topphone{
+  font-family:var(--data); font-weight:600; font-size:15px; text-decoration:none;
+  white-space:nowrap; letter-spacing:-.02em;
+}
+.topphone:hover{color:var(--edge)}
+@media (max-width:1080px){ .nav{display:none} }
+@media (max-width:1320px){ .mark__loc{display:none} }
+
+.status{
+  display:inline-flex; align-items:center; gap:7px; white-space:nowrap;
+  font-family:var(--data); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-2);
+}
+@media (max-width:520px){ .status{display:none} }
+.status__dot{width:7px; height:7px; border-radius:50%; background:var(--ink-3)}
+.status[data-open="yes"] .status__dot{background:var(--edge); box-shadow:0 0 0 3px color-mix(in srgb, var(--edge) 22%, transparent)}
+
+/* ============================================================
+   HERO — content sits inside a windshield-shaped glass panel
+   ============================================================ */
+.hero{position:relative; padding-block:clamp(28px,4vw,48px) clamp(48px,7vw,88px)}
+.glass{
+  position:relative; overflow:hidden;
+  border-radius:14px / 26px;
+  background:
+    linear-gradient(168deg, color-mix(in srgb, var(--edge) 9%, var(--panel)) 0%, var(--panel) 46%),
+    var(--panel);
+  border:1px solid var(--rule);
+  box-shadow:var(--shadow);
+  padding:clamp(28px,4.5vw,60px);
+  /* the trapezoid taper of a real windshield */
+  clip-path:polygon(2.2% 0, 97.8% 0, 100% 100%, 0 100%);
+}
+.glass__frit{
+  position:absolute; inset:0; pointer-events:none;
+  background-image:radial-gradient(circle at center, var(--frit) 1.6px, transparent 2px);
+  background-size:9px 9px;
+  -webkit-mask-image:radial-gradient(120% 130% at 50% 46%, transparent 58%, #000 100%);
+  mask-image:radial-gradient(120% 130% at 50% 46%, transparent 58%, #000 100%);
+  opacity:.34;
+}
+#crack{
+  position:absolute; inset:0; width:100%; height:100%; pointer-events:none;
+  -webkit-mask-image:radial-gradient(58% 46% at 80% 26%, #000 12%, rgba(0,0,0,.35) 62%, transparent 100%);
+  mask-image:radial-gradient(58% 46% at 80% 26%, #000 12%, rgba(0,0,0,.35) 62%, transparent 100%);
+}
+@media (max-width:880px){
+  #crack{
+    -webkit-mask-image:radial-gradient(52% 22% at 78% 13%, #000 10%, rgba(0,0,0,.3) 58%, transparent 100%);
+    mask-image:radial-gradient(52% 22% at 78% 13%, #000 10%, rgba(0,0,0,.3) 58%, transparent 100%);
+  }
+}
+.hero__grid{position:relative; display:grid; gap:clamp(26px,4vw,54px); grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); align-items:end}
+@media (max-width:880px){ .hero__grid{grid-template-columns:1fr; align-items:start} }
+
+.hero h1{margin-bottom:20px}
+.hero h1 em{font-style:normal; color:var(--edge)}
+.hero__cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px}
+.hero__aside{display:flex; flex-direction:column; gap:14px}
+
+.spec{border-top:1px solid var(--rule); padding-top:12px}
+.spec dt{font-family:var(--data); font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); margin-bottom:3px}
+.spec dd{margin:0; font-size:15.5px; color:var(--ink-2); line-height:1.4}
+.spec dd b{color:var(--ink); font-weight:600}
+
+/* breadcrumb, used on the town pages */
+.crumb{
+  font-family:var(--data); font-size:12px; letter-spacing:.06em;
+  color:var(--ink-3); padding-top:22px;
+}
+.crumb a{color:var(--ink-3); text-decoration:none}
+.crumb a:hover{color:var(--edge)}
+.crumb span{margin-inline:7px; opacity:.5}
+
+/* ============================================================
+   DECISION TOOL
+   ============================================================ */
+.tool{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(24px,4vw,56px); align-items:start;
+}
+@media (max-width:920px){ .tool{grid-template-columns:1fr} }
+.qset{display:flex; flex-direction:column; gap:22px; margin-top:26px}
+.q legend{font-size:16px; font-weight:600; padding:0; margin-bottom:9px; color:var(--ink)}
+.q{border:0; padding:0; margin:0}
+.opts{display:flex; flex-wrap:wrap; gap:8px}
+.opt{position:relative}
+.opt input{position:absolute; opacity:0; width:100%; height:100%; margin:0; cursor:pointer}
+.opt span{
+  display:block; padding:10px 15px; border:1.5px solid var(--rule); border-radius:3px;
+  font-size:14.5px; color:var(--ink-2); background:var(--panel); transition:.12s ease;
+}
+.opt input:checked + span{border-color:var(--edge); color:var(--ink); background:var(--edge-soft); font-weight:600}
+.opt input:focus-visible + span{outline:3px solid var(--edge); outline-offset:2px}
+
+.verdict{
+  background:var(--panel-2); border:1px solid var(--rule); border-radius:4px;
+  padding:clamp(22px,3vw,32px); position:sticky; top:86px;
+}
+.verdict__flag{
+  display:inline-block; font-family:var(--data); font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; font-weight:600; padding:5px 10px; border-radius:2px;
+  background:var(--edge); color:var(--panel);
+}
+.verdict[data-mode="replace"] .verdict__flag{background:var(--signal); color:#fff}
+.verdict h3{font-family:var(--display); font-stretch:condensed; text-transform:uppercase; font-size:clamp(28px,3.4vw,40px); line-height:.98; margin:16px 0 12px}
+.verdict p{color:var(--ink-2); font-size:16px}
+.verdict__why{font-family:var(--data); font-size:12.5px; color:var(--ink-3); margin-top:14px; line-height:1.6}
+.verdict .btn{margin-top:22px}
+
+/* ============================================================
+   CARDS / GRIDS
+   ============================================================ */
+.grid-4{display:grid; gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:4px; overflow:hidden; grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1000px){ .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:600px){ .grid-4{grid-template-columns:1fr} }
+.card{background:var(--panel); padding:26px 24px 30px; display:flex; flex-direction:column; gap:10px}
+.card h3{font-family:var(--display); font-stretch:condensed; text-transform:uppercase; font-size:24px; margin:0; line-height:1}
+.card p{font-size:15px; color:var(--ink-2)}
+.card .meta{margin-top:auto; padding-top:16px; font-family:var(--data); font-size:12px; color:var(--ink-3); letter-spacing:.04em; border-top:1px solid var(--rule)}
+
+.steps{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:26px; margin-top:38px}
+@media (max-width:980px){ .steps{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:560px){ .steps{grid-template-columns:1fr} }
+.step{border-top:2px solid var(--ink); padding-top:14px}
+.step__n{font-family:var(--data); font-size:12px; letter-spacing:.14em; color:var(--edge); font-weight:600}
+.step h4{font-family:var(--display); font-stretch:condensed; text-transform:uppercase; font-size:20px; margin:8px 0 6px; line-height:1.02}
+.step p{font-size:14.5px; color:var(--ink-2)}
+
+.two{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(24px,4vw,48px)}
+@media (max-width:860px){ .two{grid-template-columns:1fr} }
+.block h3{font-family:var(--display); font-stretch:condensed; text-transform:uppercase; font-size:clamp(26px,3vw,34px); margin:12px 0 14px; line-height:1}
+.block p + p{margin-top:12px}
+.ticks{list-style:none; padding:0; margin:18px 0 0; display:flex; flex-direction:column; gap:9px}
+.ticks li{position:relative; padding-left:26px; font-size:15.5px; color:var(--ink-2)}
+.ticks li::before{content:""; position:absolute; left:0; top:.55em; width:12px; height:2px; background:var(--edge)}
+
+/* reviews */
+.quotes{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(18px,2.4vw,30px); margin-top:34px}
+@media (max-width:900px){ .quotes{grid-template-columns:1fr} }
+.quote{border-left:2px solid var(--edge); padding:2px 0 2px 20px}
+.quote blockquote{margin:0; font-size:16.5px; line-height:1.55}
+.quote footer{margin-top:12px; font-family:var(--data); font-size:12px; color:var(--ink-3); letter-spacing:.05em}
+
+/* area + contact */
+.areas{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding:0; list-style:none}
+.areas li{font-family:var(--data); font-size:13px; border:1px solid var(--rule); border-radius:2px; color:var(--ink-2)}
+.areas li a, .areas li span{display:block; padding:7px 12px; text-decoration:none; color:inherit}
+.areas li a:hover{color:var(--edge); border-color:var(--edge)}
+.hours{width:100%; border-collapse:collapse; font-family:var(--data); font-size:14px; font-variant-numeric:tabular-nums; margin-top:16px}
+.hours th{text-align:left; font-weight:500; color:var(--ink-3); padding:7px 0; border-bottom:1px solid var(--rule); font-size:13px}
+.hours td{padding:7px 0; border-bottom:1px solid var(--rule); text-align:right; color:var(--ink)}
+.hours tr[data-today] th, .hours tr[data-today] td{color:var(--edge); font-weight:600}
+
+/* faq */
+.faq{margin-top:26px; border-top:1px solid var(--rule)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{
+  cursor:pointer; padding:18px 40px 18px 0; position:relative; list-style:none;
+  font-size:17.5px; font-weight:600;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+"; position:absolute; right:6px; top:15px; font-family:var(--data); font-size:22px; color:var(--edge)}
+.faq details[open] summary::after{content:"–"}
+.faq p{padding:0 0 20px; color:var(--ink-2); max-width:70ch; font-size:16px}
+
+/* footer + sticky mobile bar */
+.foot{background:var(--panel); border-top:1px solid var(--rule); padding-block:44px 34px}
+.foot__in{display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; justify-content:space-between}
+.foot__legal{font-family:var(--data); font-size:12px; color:var(--ink-3); line-height:1.7}
+.foot__mark{font-family:var(--display); font-stretch:condensed; font-weight:700; text-transform:uppercase; font-size:22px; letter-spacing:-.01em}
+
+.callbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:70; display:none;
+  grid-template-columns:1fr 1fr; gap:1px; background:var(--rule);
+  border-top:1px solid var(--rule); box-shadow:0 -8px 24px -18px rgba(0,0,0,.7);
+}
+.callbar a{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  padding:11px 8px 15px; text-decoration:none; background:var(--panel);
+  font-family:var(--display); font-stretch:condensed; text-transform:uppercase;
+  font-size:16px; letter-spacing:.01em; line-height:1.05; white-space:nowrap; text-align:center;
+}
+.callbar a small{font-family:var(--data); font-size:10.5px; letter-spacing:.06em; color:var(--ink-3); text-transform:none}
+.callbar a.primary{background:var(--signal); color:#fff}
+.callbar a.primary small{color:rgba(255,255,255,.82)}
+@media (max-width:760px){ .callbar{display:grid} body{padding-bottom:72px} }
+
+/* marks a placeholder that needs real data before launch */
+.note{
+  font-family:var(--data); font-size:11.5px; color:var(--ink-3);
+  border:1px dashed var(--rule); border-radius:2px; padding:4px 8px; display:inline-block;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important}
+}
